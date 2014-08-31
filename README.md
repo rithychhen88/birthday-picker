@@ -7,12 +7,12 @@ A jquery plugin for birthday.
 
 Birthday Picker requires the following libraries:
 
-The latest Jquery, which you can download from here.
-The latest Bootstrap, you can download from here.
+1. The latest Jquery, which you can download from [here](http://jquery.com).
+2. The latest Bootstrap, you can download from [here](http://getbootstrap.com/).
 
 ##Getting Started
 
-Download the latest code from here
+Download the latest code from [here](https://github.com/rithychhen88/birthday-picker).
 
 ##How to use Birthday Picker
 
