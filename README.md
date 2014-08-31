@@ -3,17 +3,18 @@ birthday-picker
 
 A jquery plugin for birthday. 
 
-Dependencies
+##Dependencies
 
 Birthday Picker requires the following libraries:
 
 The latest Jquery, which you can download from here.
 The latest Bootstrap, you can download from here.
-Getting Started
+
+##Getting Started
 
 Download the latest code from here
 
-How to use Birthday Picker
+##How to use Birthday Picker
 
 Include the following css files into the header
 ```
@@ -37,7 +38,7 @@ Include the following near the end of the page or in a seperate javascript file
     $("#birthdayPicker").birthdayPicker();
 </script>
 ```
-Initialization Options
+##Initialization Options
 
 The following are the initialization options and their default values
 ```
