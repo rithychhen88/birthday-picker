@@ -1,7 +1,7 @@
 birthday-picker
 ===============
 
-A jquery plugin for birthday. 
+A jquery plugin for birthday. Check out the demo [here](http://www.rithychhen.com/jquery/birthdaypicker)
 
 ##Dependencies
 
