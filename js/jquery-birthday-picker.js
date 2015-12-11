@@ -9,15 +9,28 @@ $(function ($)
 	todayYear = today.getFullYear(),
     todayMonth = today.getMonth() + 1,
     todayDay = today.getDate();
+    updateTheBirthDayValue = function(options, $selector, selectedYear, selectedMonth, selectedDay) {
+      if ((selectedYear * selectedMonth * selectedDay) != 0) {
+        if (selectedMonth<10) selectedMonth="0"+selectedMonth;
+        if (selectedDay<10) selectedDay="0"+selectedDay;
+        hiddenDate = selectedYear + "-" + selectedMonth + "-" + selectedDay;
+        $selector.val(hiddenDate);
 
+        if (options.callback) {
+          options.callback(hiddenDate);
+        }
+      }
+    }
     generateBirthdayPicker = function ($parent, options) 
     {
+      var parentId = $parent.attr('id').replace(/-/g, '');
+
     	// Create the html picker skeleton
       	var $fieldset = $("<fieldset class='birthdayPicker'></fieldset>"),
-        	$year = $("<select class='birthYear "+options.sizeClass+"' name='birth[year]'></select>"),
-          	$month = $("<select class='birthMonth "+options.sizeClass+"' name='birth[month]'></select>"),
-          	$day = $("<select class='birthDate "+options.sizeClass+"' name='birth[day]'></select>")
-          	$birthday = $("<input class='birthDay' name='birthDay' type='hidden'/>");
+        	$year = $("<select class='birthYear "+options.sizeClass+"' name='"+parentId+"_birth[year]'></select>"),
+          	$month = $("<select class='birthMonth "+options.sizeClass+"' name='"+parentId+"_birth[month]'></select>"),
+          	$day = $("<select class='birthDate "+options.sizeClass+"' name='"+parentId+"_birth[day]'></select>")
+          	$birthday = $("<input class='birthDay' name='"+parentId+"_birthDay' type='hidden'/>");
 
          // Add the option placeholders if specified
       	if (options.placeholder) {
@@ -52,16 +65,16 @@ $(function ($)
      		$("<option></option>").attr('value', i).text(number).appendTo($day);
      	}
 
+        $fieldset.append($birthday);
+        $parent.append($fieldset);
         // Set the default date if given
       	if (options.defaultDate) {
         	var date = new Date(options.defaultDate);
-        	console.log(date);
         	$year.val(date.getFullYear());
         	$month.val(date.getMonth() + 1);
         	$day.val(date.getDate());
+          updateTheBirthDayValue(options, $birthday, date.getFullYear(), date.getMonth() + 1, date.getDate());
       	}
-      	$fieldset.append($birthday);
-        $parent.append($fieldset);
         $fieldset.on('change', function () 
         {
         	// currently selected values
@@ -102,12 +115,7 @@ $(function ($)
             	}
             }
             // update the hidden date
-        	if ((selectedYear * selectedMonth * selectedDay) != 0) {
-          		if (selectedMonth<10) selectedMonth="0"+selectedMonth;
-          		if (selectedDay<10) selectedDay="0"+selectedDay;
-          		hiddenDate = selectedYear + "-" + selectedMonth + "-" + selectedDay;
-          		$(this).find("input[name=birthDay]").val(hiddenDate);
-          	}
+            updateTheBirthDayValue(options, $birthday, selectedYear, selectedMonth, selectedDay);
         });
     }
 
@@ -127,6 +135,7 @@ $(function ($)
       	"monthFormat"   : "number",
       	"placeholder"   : true,
       	"defaultDate"   : false,
-      	"sizeClass"		: "span2"
+      	"sizeClass"		: "span2",
+        'callback': false
 	} 
 }( jQuery ))
