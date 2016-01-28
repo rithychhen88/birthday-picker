@@ -77,6 +77,7 @@ $(function ($)
       	}
         $fieldset.on('change', function () 
         {
+            $birthday = $(this).find('.birthDay');
         	// currently selected values
             selectedYear = parseInt($year.val(), 10),
             selectedMonth = parseInt($month.val(), 10),
