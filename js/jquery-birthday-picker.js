@@ -5,7 +5,7 @@ $(function ($)
         "short": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         "long": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     },
-    today = new Date(), 
+    today = new Date(),
     todayYear = today.getFullYear(),
     todayMonth = today.getMonth() + 1,
     todayDay = today.getDate();
@@ -21,16 +21,20 @@ $(function ($)
         }
       }
     }
-    generateBirthdayPicker = function ($parent, options) 
+    generateBirthdayPicker = function ($parent, options)
     {
         var parentId = $parent.attr('id').replace(/-/g, '');
+
+        if (!options.name) {
+          options.name = parentId+"_birthDay";
+        }
 
         // Create the html picker skeleton
           var $fieldset = $("<fieldset class='birthdayPicker'></fieldset>"),
             $year = $("<select class='birthYear "+options.sizeClass+"' name='"+parentId+"_birth[year]'></select>"),
               $month = $("<select class='birthMonth "+options.sizeClass+"' name='"+parentId+"_birth[month]'></select>"),
               $day = $("<select class='birthDate "+options.sizeClass+"' name='"+parentId+"_birth[day]'></select>")
-              $birthday = $("<input class='birthDay' name='"+parentId+"_birthDay' type='hidden'/>");
+              $birthday = $("<input class='birthDay' name='"+options.name+"' type='hidden'/>");
 
          // Add the option placeholders if specified
           if (options.placeholder) {
@@ -47,15 +51,15 @@ $(function ($)
           } else {
             $fieldset.append($month).append($day).append($year);
          }
-         //calculate the year to add to the select options. 
-         var yearBegin = todayYear - options.minAge; 
+         //calculate the year to add to the select options.
+         var yearBegin = todayYear - options.minAge;
          var yearEnd = todayYear - options.maxAge;
          if (options.maxYear != todayYear && options.maxYear > todayYear) {
-             yearBegin = options.maxYear; 
+             yearBegin = options.maxYear;
              yearEnd = yearEnd + (options.maxYear - todayYear)
          }
-         for (var i = yearBegin; i >= yearEnd; i--) { 
-             $("<option></option>").attr("value", i).text(i).appendTo($year); 
+         for (var i = yearBegin; i >= yearEnd; i--) {
+             $("<option></option>").attr("value", i).text(i).appendTo($year);
          }
          for (var i = 0; i <= 11; i++) {
              $("<option></option>").attr('value', i + 1).text(month[options.monthFormat][i]).appendTo($month);
@@ -66,8 +70,8 @@ $(function ($)
          }
 
         $fieldset.append($birthday);
-        $parent.append($fieldset); 
-        
+        $parent.append($fieldset);
+
         // Set the default date if given
         if (options.defaultDate) {
             if($.type(options.defaultDate) !== "date"){
@@ -89,14 +93,14 @@ $(function ($)
             $day.val(date.getDate());
             updateTheBirthDayValue(options, $birthday, date.getFullYear(), date.getMonth() + 1, date.getDate());
         }
-        $fieldset.on('change', function () 
+        $fieldset.on('change', function ()
         {
             $birthday = $(this).find('.birthDay');
             // currently selected values
             selectedYear = parseInt($year.val(), 10),
             selectedMonth = parseInt($month.val(), 10),
             selectedDay = parseInt($day.val(), 10);
-            //rebuild the index for the month. 
+            //rebuild the index for the month.
             var currentMaxMonth = $month.children(":last").val();
             if (selectedYear > todayYear) {
                 if (currentMaxMonth > todayMonth) {
@@ -104,7 +108,7 @@ $(function ($)
                         $month.children(":last").remove();
                         currentMaxMonth--;
                     }
-                } 
+                }
             } else {
                 while (currentMaxMonth < 12) {
                     $("<option></option>").attr('value', parseInt(currentMaxMonth)+1).text(month[options.monthFormat][currentMaxMonth]).appendTo($month);
@@ -112,18 +116,18 @@ $(function ($)
                 }
             }
 
-            var currentMaxDate = $day.children(":last").val(); 
+            var currentMaxDate = $day.children(":last").val();
             // number of days in currently selected year/month
             var actMaxDay = (new Date(selectedYear, selectedMonth, 0)).getDate();
             if (currentMaxDate > actMaxDay) {
                 while (currentMaxDate > actMaxDay) {
-                    $day.children(":last").remove(); 
+                    $day.children(":last").remove();
                     currentMaxDate--;
                 }
             } else if (currentMaxDate < actMaxDay ) {
-                while (currentMaxDate < actMaxDay) 
+                while (currentMaxDate < actMaxDay)
                 {
-                    var dateIndex = parseInt(currentMaxDate) + 1; 
+                    var dateIndex = parseInt(currentMaxDate) + 1;
                     var number = (dateIndex < 10) ? "0"+dateIndex: dateIndex;
                      $("<option></option>").attr('value', dateIndex).text(number).appendTo($day);
                     currentMaxDate++;
@@ -134,7 +138,7 @@ $(function ($)
         });
     }
 
-    $.fn.birthdayPicker = function(options) 
+    $.fn.birthdayPicker = function(options)
     {
         return this.each(function () {
             var settings = $.extend($.fn.birthdayPicker.defaults, options );
